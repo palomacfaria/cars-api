@@ -1,4 +1,4 @@
-import { ICar } from "../interfaces/cars.interface";
+import { ICar } from "../interfaces/cars.interfaces";
 
 export const carsDatabase: ICar[] = [];
 
