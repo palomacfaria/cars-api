@@ -1,3 +1,4 @@
+import { I } from "vitest/dist/reporters-5f784f42";
 import { carsDatabase, generateCarId } from "../database/cars";
 import { ICar, TCreateBody, TUpdateBody } from "../interfaces/cars.interfaces";
 
@@ -5,8 +6,8 @@ interface ICarsServices {
   create(body: TCreateBody): ICar;
   getMany(search?: string, year?: string): ICar[];
   getOne(id: string): ICar;
-  /*   delete(id: string): void;
-  update(body:TUpdateBody, id: string): ICar; */
+  delete(id: string): void;
+  update(body: TUpdateBody, id: string): ICar;
 }
 
 export class CarsServices implements ICarsServices {
@@ -50,10 +51,23 @@ export class CarsServices implements ICarsServices {
 
     return car;
   }
-  /*     delete(id: string): void {
-        
-    }
-    update(body: Partial<TCreateBody>, id: string): ICar {
-        
-    } */
+  delete(id: string): void {
+    const index = carsDatabase.findIndex((car) => car.id === Number(id));
+
+    carsDatabase.splice(index, 1);
+  }
+  update(body: Partial<TCreateBody>, id: string): ICar {
+    const currentCar = carsDatabase.find(
+      (car) => car.id === Number(id)
+    ) as ICar;
+    const index = carsDatabase.findIndex((car) => car.id === Number(id));
+
+    const date = new Date();
+
+    const newCar = { ...currentCar, ...body, updatedAt: date };
+
+    carsDatabase.splice(index, 1, newCar);
+
+    return newCar;
+  }
 }
